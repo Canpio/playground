@@ -116,5 +116,8 @@ int main() {
     vec_c = vec_a + vec_b * vec_a;
     std::cout << vec_c << std::endl;
 
+    vec_c = vec_a / vec_b;
+    std::cout << vec_c << std::endl;
+
     return 0;
 }
