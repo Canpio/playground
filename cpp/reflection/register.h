@@ -1,13 +1,12 @@
 #include <iostream>
 #include <map>
 #include <string>
-
-typedef void *(*ConstructFunc)();
+#include <functional>
 
 class ClassManager {
   public:
     static void *get_new_instance(const std::string &class_name) {
-        std::map<std::string, ConstructFunc>::iterator itor = _register_map.find(class_name);
+        std::map<std::string, std::function<void*()> >::iterator itor = _register_map.find(class_name);
         if (itor == _register_map.end()) {
             return nullptr;
         } else {
@@ -15,21 +14,21 @@ class ClassManager {
         }
     }
 
-    static void register_new_class(const std::string &class_name, ConstructFunc func) {
+    static void register_new_class(const std::string &class_name, std::function<void*()> func) {
         _register_map[class_name] = func;
         std::cout << "register class:" << class_name << std::endl;
         return;
     }
 
   private:
-    static std::map<std::string, ConstructFunc> _register_map;
+    static std::map<std::string, std::function<void*()> > _register_map;
 };
 
-std::map<std::string, ConstructFunc> ClassManager::_register_map;
+std::map<std::string, std::function<void*()> > ClassManager::_register_map;
 
 class Register {
   public:
-    Register(const std::string &class_name, ConstructFunc func) {
+    Register(const std::string &class_name, std::function<void*()> func) {
         ClassManager::register_new_class(class_name, func);
     }
 };
